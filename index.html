@@ -11,17 +11,16 @@ main{max-width:780px;margin:auto;padding:14px 13px 80px}.tabs{display:flex;gap:7
 </style>
 </head>
 <body>
-<header><button class="lang" id="lang">EN / FA</button><div class="brand">NOLA</div><div class="sub">LOUNGE CAFÉ</div><p class="tag" id="tag">قهوه خوب، حال خوب؛ به نولا خوش آمدید.</p></header>
+<header><button class="lang" id="lang">EN / FA</button><div class="brand">NOLA</div><div class="sub">LOUNGE CAFÉ</div></header>
 <main><nav class="tabs" id="tabs"></nav><div id="menu"><p class="muted">در حال بارگذاری منو…</p></div></main>
 <footer><span>ساعت کاری <b>07:00 — 00:00</b></span><span><b>NOLA</b> · <span id="address">جنب لاله پارک، فرشته جنوبی، تبریز</span></span></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script>
 <script>
-const cats=[["coffee","قهوه","Coffee"],["hot","نوشیدنی گرم","Hot Drinks"],["cold","نوشیدنی سرد","Cold Drinks"],["mocktail","موکتل و شیک","Mocktail & Shake"],["pizza","پیتزا","Pizza"],["burger","برگر","Burger"],["pasta","پاستا","Pasta"],["salad","سالاد و دسر","Salad & Dessert"],["hookah","قلیان","Hookah"]];
+const cats=[["coffee","قهوه","Coffee"],["brew","قهوه‌های دمی","Brewed Coffee"],["hot","نوشیدنی‌های گرم","Hot Drinks"],["tea","دمنوش‌ها","Herbal Tea"],["cold","موکتل","Mocktail"],["mocktail","شیک","Shake"],["breakfast","صبحانه","Breakfast"],["pizza","پیتزا","Pizza"],["burger","برگر","Burger"],["pasta","پاستا","Pasta"],["salad","سالاد و دسر","Salad & Dessert"],["hookah","قلیان","Hookah"]];
 let lang="fa",active="coffee",items=[];
 const $=id=>document.getElementById(id);
 function render(){
 document.documentElement.lang=lang;document.documentElement.dir=lang==="fa"?"rtl":"ltr";
-$("tag").textContent=lang==="fa"?"قهوه خوب، حال خوب؛ به نولا خوش آمدید.":"Good coffee. Better mood. Welcome to NOLA.";
 $("address").textContent=lang==="fa"?"جنب لاله پارک، فرشته جنوبی، تبریز":"Beside Laleh Park, Fereshteh Jonubi, Tabriz";
 $("tabs").innerHTML="";cats.forEach(c=>{let b=document.createElement("button");b.className="tab"+(active===c[0]?" active":"");b.textContent=lang==="fa"?c[1]:c[2];b.onclick=()=>{active=c[0];render()};$("tabs").appendChild(b)});
 let c=cats.find(x=>x[0]===active);let shown=items.filter(x=>x.category===active&&x.active!==false).sort((a,b)=>(a.sort_order||0)-(b.sort_order||0));
@@ -30,6 +29,7 @@ let grid=document.createElement("div");grid.className="items";
 if(!shown.length){grid.innerHTML='<p class="muted">'+(lang==="fa"?"هنوز محصولی در این دسته ثبت نشده است.":"No items in this category yet.")+'</p>'}
 shown.forEach(it=>{let nm=lang==="fa"?it.name_fa:it.name_en;let alt=lang==="fa"?it.name_en:it.name_fa;const desc=lang==="fa"?it.description_fa:it.description_en;let row=document.createElement("article");if(it.category==="pizza"){row.className="pizza-card";let top=document.createElement("div");top.className="pizza-top";let info=document.createElement("div");info.className="pizza-info";let name=document.createElement("div");name.className="name";name.textContent=nm;let en=document.createElement("span");en.className="en";en.textContent=alt;name.appendChild(en);info.appendChild(name);if(desc){let d=document.createElement("div");d.className="description";d.textContent=desc;info.appendChild(d)}let img=document.createElement("img");img.className="pizza-photo";img.loading="lazy";img.src=it.image_url||"https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=300&q=80";img.alt=nm;img.onerror=()=>img.style.visibility="hidden";top.append(info,img);row.appendChild(top);let line=document.createElement("div");line.className="pizza-divider";row.appendChild(line);let sizes=document.createElement("div");sizes.className="pizza-sizes";[["large",lang==="fa"?"بزرگ":"Large"],["medium",lang==="fa"?"متوسط":"Medium"],["small",lang==="fa"?"کوچک":"Small"]].forEach(([key,label])=>{let box=document.createElement("div");box.className="pizza-size";let b=document.createElement("b");b.textContent=label;let price=document.createElement("span");let v=it["price_"+key];price.textContent=(v!==null&&v!==undefined&&v!==""?Number(v).toLocaleString(lang==="fa"?"fa-IR":"en-US"):"…")+(lang==="fa"?" تومان":" Toman");box.append(b,price);sizes.appendChild(box)});row.appendChild(sizes)}else{row.className="item";let main=document.createElement("div");main.className="item-main";let name=document.createElement("div");name.className="name";name.textContent=nm;let en=document.createElement("span");en.className="en";en.textContent=alt;name.appendChild(en);main.appendChild(name);if(desc){let d=document.createElement("div");d.className="description";d.textContent=desc;main.appendChild(d)}let price=document.createElement("div");price.className="price";price.textContent=Number(it.price).toLocaleString(lang==="fa"?"fa-IR":"en-US")+" "+(lang==="fa"?"هزار تومان":"K Toman");if(it.image_url){let img=document.createElement("img");img.className="product-photo";img.loading="lazy";img.src=it.image_url;img.alt=nm;img.onerror=()=>img.remove();row.append(img)}row.append(main,price)}grid.appendChild(row)});
 $("menu").appendChild(grid);
+if(active==="coffee") { const note=document.createElement("p"); note.className="muted"; note.style.padding="14px 4px 4px"; note.textContent=lang==="fa"?"تمامی آیتم ها میتواند با یخ باشد":"All items can be served with ice"; $("menu").appendChild(note); }
 }
 $("lang").onclick=()=>{lang=lang==="fa"?"en":"fa";render()};
 async function loadMenu(){
