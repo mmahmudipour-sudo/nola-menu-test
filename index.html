@@ -8,9 +8,32 @@
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#291019 0%,var(--bg) 42%);color:var(--white);font-family:Tahoma,Arial,sans-serif}
 header{text-align:center;padding:26px 16px 20px;border-bottom:1px solid var(--line);position:relative}.brand{font:clamp(48px,13vw,76px) Georgia,serif;letter-spacing:9px;direction:ltr;text-shadow:0 0 8px var(--red),0 0 26px #ff173866}.sub{font-size:11px;letter-spacing:5px;color:var(--red);direction:ltr}.tag{font-size:12px;color:var(--muted);margin:13px 0 0}.lang{position:absolute;left:12px;top:12px;background:#171014;color:white;border:1px solid #6c2534;border-radius:20px;padding:8px 12px}
 main{max-width:780px;margin:auto;padding:14px 13px 80px}.tabs{display:flex;gap:7px;overflow:auto;padding:8px 0 14px;position:sticky;top:0;background:#09090bf2;z-index:3}.tab{white-space:nowrap;border:1px solid #3b2028;background:#121013;color:#eee;border-radius:22px;padding:11px 15px;font-size:14px;font-weight:700}.tab.active{background:var(--red2);border-color:var(--red);box-shadow:0 0 15px #ff17382a}.title{font:22px Georgia,Tahoma,serif;display:flex;align-items:center;gap:10px;margin:12px 0 15px}.title:after{content:"";height:1px;background:linear-gradient(90deg,var(--red),transparent);flex:1}.title small{font:12px Tahoma;color:var(--red)}.items{display:grid;gap:9px}.item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 14px;background:linear-gradient(110deg,#171217,#0f0f11);border:1px solid #2c1c23;border-radius:12px}.name{font-size:14px;line-height:1.6}.description{font-size:12px;line-height:1.8;color:#b8a9ae;margin-top:5px;max-width:46ch}.item{align-items:flex-start}.product-photo{width:86px;height:86px;object-fit:cover;border-radius:9px;border:1px solid #5d1d2b;flex-shrink:0;box-shadow:0 0 16px #ff17381c}.item-main{flex:1;min-width:0}.en{display:block;color:var(--muted);font-size:11px;margin-top:3px}.price{color:var(--red);font-weight:bold;white-space:nowrap;font-size:14px}.pizza-card{display:flex;flex-direction:column;gap:0;padding:16px;border:1px solid #5a202d;border-radius:16px;background:#111114}.pizza-top{display:flex;align-items:flex-start;gap:14px;min-height:154px}.pizza-photo{width:112px;height:150px;object-fit:cover;border-radius:15px;flex-shrink:0}.pizza-info{flex:1;min-width:0;text-align:right;padding-top:34px}.pizza-info .name{color:var(--red);font-weight:bold;font-size:16px}.pizza-divider{height:1px;background:#51202b;margin:16px 0 20px}.pizza-sizes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.pizza-size{background:#21171b;border-radius:13px;padding:10px 5px;text-align:center}.pizza-size b{display:block;font-size:13px;color:#f5f0ef}.pizza-size span{display:block;color:var(--red);font-weight:bold;margin-top:7px;font-size:14px}.pizza-foot{font-size:10px;color:#b8a9ae;text-align:right;margin-top:14px}.pizza-card .description{max-width:none}@media(max-width:420px){.pizza-top{min-height:130px;gap:10px}.pizza-photo{width:94px;height:130px}.pizza-info{padding-top:22px}.pizza-size span{font-size:12px}}.muted{text-align:center;color:var(--muted);font-size:12px;padding:20px 4px}footer{position:fixed;bottom:0;left:0;right:0;background:#0b090bf2;border-top:1px solid #4b1a28;padding:14px 16px calc(14px + env(safe-area-inset-bottom));display:flex;justify-content:space-between;gap:10px;font-size:12px;z-index:4;backdrop-filter:blur(12px)}footer b{color:var(--red);direction:ltr}@media(min-width:560px){.items{grid-template-columns:1fr 1fr}}
+
+#welcome{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;text-align:center;padding:28px 22px;background:radial-gradient(ellipse at 50% 30%,#451321 0%,#160b10 44%,#070709 100%);}
+#welcome:before{content:"";position:absolute;inset:18px;border:1px solid #7b2639;pointer-events:none;}
+.welcome-inner{position:relative;width:min(100%,480px);display:flex;flex-direction:column;align-items:center;}
+.welcome-mark{font:clamp(64px,18vw,96px) Georgia,serif;letter-spacing:12px;direction:ltr;color:#f8f0f1;text-shadow:0 0 10px #ff173866,0 0 36px #ff173833;margin-left:12px;}
+.welcome-line{width:72px;height:2px;background:var(--red);margin:18px 0 24px;box-shadow:0 0 12px #ff1738aa;}
+.welcome-title{font-size:clamp(21px,5vw,27px);font-weight:700;letter-spacing:.2px;margin:0 0 12px;color:#fff7f8;}
+.welcome-sub{font-size:12px;letter-spacing:5px;color:#d75a70;direction:ltr;margin-bottom:40px;}
+.enter-menu{border:1px solid var(--red);border-radius:4px;background:linear-gradient(135deg,#b20d2c,#6e071b);color:white;font-family:inherit;font-size:15px;font-weight:700;padding:15px 34px;min-width:190px;box-shadow:0 0 24px #ff17382a;cursor:pointer;transition:transform .2s,box-shadow .2s;}
+.enter-menu:active{transform:scale(.98)}
+.welcome-caption{color:#a99ba0;font-size:11px;margin-top:18px;letter-spacing:1px;}
+body.welcome-mode{overflow:hidden}body.welcome-mode>header,body.welcome-mode>main,body.welcome-mode>footer{visibility:hidden}
+
 </style>
 </head>
-<body>
+<body class="welcome-mode">
+<div id="welcome" aria-label="NOLA welcome page">
+  <div class="welcome-inner">
+    <div class="welcome-mark">NOLA</div>
+    <div class="welcome-line"></div>
+    <h1 class="welcome-title" id="welcomeTitle">به نولا خوش آمدید</h1>
+    <div class="welcome-sub">LOUNGE CAFÉ</div>
+    <button class="enter-menu" id="enterMenu">مشاهده منو</button>
+    <div class="welcome-caption" id="welcomeCaption">A TASTE OF NOLA</div>
+  </div>
+</div>
 <header><button class="lang" id="lang">EN / FA</button><div class="brand">NOLA</div><div class="sub">LOUNGE CAFÉ</div></header>
 <main><nav class="tabs" id="tabs"></nav><div id="menu"><p class="muted">در حال بارگذاری منو…</p></div></main>
 <footer><span>ساعت کاری <b>07:00 — 00:00</b></span><span><b>NOLA</b> · <span id="address">جنب لاله پارک، فرشته جنوبی، تبریز</span></span></footer>
@@ -32,7 +55,14 @@ shown.forEach(it=>{let nm=lang==="fa"?it.name_fa:it.name_en;let alt=lang==="fa"?
 $("menu").appendChild(grid);
 if(active==="coffee") { const note=document.createElement("p"); note.className="muted"; note.style.padding="14px 4px 4px"; note.textContent=lang==="fa"?"تمامی آیتم ها میتواند با یخ باشد":"All items can be served with ice"; $("menu").appendChild(note); }
 }
-$("lang").onclick=()=>{lang=lang==="fa"?"en":"fa";render()};
+function updateWelcomeLanguage(){
+  $("welcomeTitle").textContent=lang==="fa"?"به نولا خوش آمدید":"Welcome to NOLA";
+  $("enterMenu").textContent=lang==="fa"?"مشاهده منو":"VIEW MENU";
+  $("welcomeCaption").textContent=lang==="fa"?"طعم متفاوت نولا":"A TASTE OF NOLA";
+}
+$("lang").onclick=()=>{lang=lang==="fa"?"en":"fa";render();updateWelcomeLanguage()};
+$("enterMenu").onclick=()=>{ $("welcome").style.display="none"; document.body.classList.remove("welcome-mode"); window.scrollTo(0,0); };
+updateWelcomeLanguage();
 async function loadMenu(){
 if(!window.NOLA_CONFIG||!NOLA_CONFIG.supabaseUrl||!NOLA_CONFIG.supabaseAnonKey){items=[];render();return}
 try{const sb=window.supabase.createClient(NOLA_CONFIG.supabaseUrl,NOLA_CONFIG.supabaseAnonKey);const {data,error}=await sb.from("menu_items").select("*").eq("active",true).order("sort_order");if(error)throw error;items=data||[];render()}catch(e){items=[];render()}
