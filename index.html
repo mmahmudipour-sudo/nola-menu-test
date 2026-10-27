@@ -20,6 +20,16 @@ main{max-width:780px;margin:auto;padding:14px 13px 80px}.tabs{display:flex;gap:7
 .enter-menu:active{transform:scale(.98)}
 .welcome-caption{color:#a99ba0;font-size:11px;margin-top:18px;letter-spacing:1px;}
 body.welcome-mode{overflow:hidden}body.welcome-mode>header,body.welcome-mode>main,body.welcome-mode>footer{visibility:hidden}
+.music-card{margin-top:28px;padding:20px 16px;border:1px solid #642536;border-radius:15px;background:linear-gradient(145deg,#1d1117,#0d0c0e);box-shadow:0 0 22px #ff173810}
+.music-card>p{color:#c7b8bd;line-height:2;font-size:13px;margin:8px 0 16px}
+.music-card form{display:grid;gap:10px}
+.music-card input{width:100%;min-width:0;padding:14px;border:1px solid #5b2634;border-radius:9px;background:#09090b;color:#f5f0ef;font:inherit}
+.music-card button{padding:13px 16px;border:1px solid #ff1738;border-radius:9px;background:linear-gradient(135deg,#a20a2a,#65071b);color:white;font:inherit;font-weight:bold;cursor:pointer}
+.music-card button:disabled{opacity:.6;cursor:wait}
+#music-message{margin:0;font-size:12px;line-height:1.8;color:#ff9cad}
+#music-message:empty{display:none}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
 
 </style>
 </head>
@@ -35,7 +45,12 @@ body.welcome-mode{overflow:hidden}body.welcome-mode>header,body.welcome-mode>mai
   </div>
 </div>
 <header><button class="lang" id="lang">EN / FA</button><div class="brand">NOLA</div><div class="sub">LOUNGE CAFÉ</div></header>
-<main><nav class="tabs" id="tabs"></nav><div id="menu"><p class="muted">در حال بارگذاری منو…</p></div></main>
+<main><nav class="tabs" id="tabs"></nav><div id="menu"><p class="muted">در حال بارگذاری منو…</p></div>
+<section id="music-request" class="music-card" aria-labelledby="music-title">
+<h2 class="title" id="music-title">NOLA MUSIC REQUEST <small>🎵</small></h2>
+<p id="music-description">موسیقی بعدی نولا رو تو انتخاب کن! دوست داری چه آهنگی در فضای نولا پخش بشه؟ اسم آهنگ یا خوانندهٔ موردعلاقه‌ات رو برامون بنویس.</p>
+<form id="music-form"><label class="sr-only" for="music-song">نام آهنگ یا خواننده</label><input id="music-song" name="song" maxlength="200" required placeholder="نام آهنگ یا خواننده را وارد کنید" autocomplete="off"><button id="music-submit" type="submit">ثبت پیشنهاد موسیقی</button><p id="music-message" role="status" aria-live="polite"></p></form>
+</section></main>
 <footer><span>ساعت کاری <b>07:00 — 00:00</b></span><span><b>NOLA</b> · <span id="address">جنب لاله پارک، فرشته جنوبی، تبریز</span></span></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script>
 <script>
@@ -60,9 +75,29 @@ function updateWelcomeLanguage(){
   $("enterMenu").textContent=lang==="fa"?"مشاهده منو":"VIEW MENU";
   $("welcomeCaption").textContent=lang==="fa"?"طعم متفاوت نولا":"A TASTE OF NOLA";
 }
-$("lang").onclick=()=>{lang=lang==="fa"?"en":"fa";render();updateWelcomeLanguage()};
+function updateMusicLanguage(){
+$("music-description").textContent=lang==="fa"?"موسیقی بعدی نولا رو تو انتخاب کن! دوست داری چه آهنگی در فضای نولا پخش بشه؟ اسم آهنگ یا خوانندهٔ موردعلاقه‌ات رو برامون بنویس.":"Choose the next song at NOLA! Which song or artist would you love to hear here?";
+$("music-song").placeholder=lang==="fa"?"نام آهنگ یا خواننده را وارد کنید":"Enter a song or artist";
+$("music-submit").textContent=lang==="fa"?"ثبت پیشنهاد موسیقی":"Submit music request";
+}
+$("music-form").addEventListener("submit",async(e)=>{
+e.preventDefault();
+const song=$("music-song").value.trim(), message=$("music-message");
+if(!song||song.length>200){message.textContent=lang==="fa"?"لطفاً نام آهنگ یا خواننده را وارد کنید.":"Please enter a song or artist.";return;}
+if(!window.NOLA_CONFIG?.supabaseUrl||!window.NOLA_CONFIG?.supabaseAnonKey){message.textContent=lang==="fa"?"ارسال پیشنهاد فعلاً در دسترس نیست.":"Music requests are temporarily unavailable.";return;}
+const button=$("music-submit");button.disabled=true;message.textContent=lang==="fa"?"در حال ارسال…":"Sending…";
+try{
+const client=window.supabase.createClient(NOLA_CONFIG.supabaseUrl,NOLA_CONFIG.supabaseAnonKey);
+const {error}=await client.functions.invoke("nola-music-request",{body:{song}});
+if(error)throw error;
+message.textContent=lang==="fa"?"پیشنهادت ارسال شد!":"Your request has been sent!";$("music-song").value="";
+}catch(err){console.error("NOLA music request failed",err);message.textContent=lang==="fa"?"ارسال انجام نشد؛ لطفاً کمی بعد دوباره تلاش کنید.":"Could not send. Please try again later.";}
+finally{button.disabled=false;}
+});
+$("lang").onclick=()=>{lang=lang==="fa"?"en":"fa";render();updateWelcomeLanguage();updateMusicLanguage()};
 $("enterMenu").onclick=()=>{ $("welcome").style.display="none"; document.body.classList.remove("welcome-mode"); window.scrollTo(0,0); };
 updateWelcomeLanguage();
+updateMusicLanguage();
 async function loadMenu(){
 if(!window.NOLA_CONFIG||!NOLA_CONFIG.supabaseUrl||!NOLA_CONFIG.supabaseAnonKey){items=[];render();return}
 try{const sb=window.supabase.createClient(NOLA_CONFIG.supabaseUrl,NOLA_CONFIG.supabaseAnonKey);const {data,error}=await sb.from("menu_items").select("*").eq("active",true).order("sort_order");if(error)throw error;items=data||[];render()}catch(e){items=[];render()}
