@@ -39,10 +39,8 @@ body.welcome-mode{overflow:hidden}body.welcome-mode>header,body.welcome-mode>mai
   <div class="welcome-inner">
     <div class="welcome-mark">NOLA</div>
     <div class="welcome-line"></div>
-    <h1 class="welcome-title" id="welcomeTitle">به نولا خوش آمدید</h1>
     <div class="welcome-sub">LOUNGE CAFÉ</div>
     <button class="enter-menu" id="enterMenu">مشاهده منو</button>
-    <div class="welcome-caption" id="welcomeCaption">A TASTE OF NOLA</div>
   </div>
 </div>
 <header><button class="lang" id="lang">EN / FA</button><div class="brand">NOLA</div><div class="sub">LOUNGE CAFÉ</div></header>
@@ -72,9 +70,7 @@ $("menu").appendChild(grid);
 if(active==="coffee") { const note=document.createElement("p"); note.className="muted"; note.style.padding="14px 4px 4px"; note.textContent=lang==="fa"?"تمامی آیتم ها میتواند با یخ باشد":"All items can be served with ice"; $("menu").appendChild(note); }
 }
 function updateWelcomeLanguage(){
-  $("welcomeTitle").textContent=lang==="fa"?"به نولا خوش آمدید":"Welcome to NOLA";
   $("enterMenu").textContent=lang==="fa"?"مشاهده منو":"VIEW MENU";
-  $("welcomeCaption").textContent=lang==="fa"?"طعم متفاوت نولا":"A TASTE OF NOLA";
 }
 function updateMusicLanguage(){
 $("music-description").textContent=lang==="fa"?"موسیقی بعدی نولا رو تو انتخاب کن! دوست داری چه آهنگی در فضای نولا پخش بشه؟ اسم آهنگ یا خوانندهٔ موردعلاقه‌ات رو برامون بنویس.":"Choose the next song at NOLA! Which song or artist would you love to hear here?";
